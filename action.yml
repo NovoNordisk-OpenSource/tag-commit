@@ -1,15 +1,28 @@
 name: 'Create and Save Tag'
 description: 'Creates a new tag and saves it'
+inputs:
+  complete:
+    description: 'Whether the pipline is completed'
+    required: false
+    default: 'false'
 
 runs:
   using: 'composite'
   steps:
-    - name: Create Tag
-      id: create_tag
+    - name: tag_name
+      id: tag_name
       run: |
-        TAG_NAME=$(date +'%Y%m%dT%H%M%S')
-        git tag $TAG_NAME
+        PREFIX=""
+        if [ "${{ inputs.complete }}" == "true" ]; then
+          PREFIX="release#"
+        fi
+        TAG_NAME=$PREFIX$(date +'%Y%m%dT%H%M%S')
         echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Create Tag
+      run: |
+        TAG_NAME=${{ steps.tag_name.outputs.tag_name }}
+        git tag $TAG_NAME
       shell: bash
     - name: Push Tag
       run: |
