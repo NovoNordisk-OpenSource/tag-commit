@@ -26,6 +26,6 @@ runs:
       shell: bash
     - name: Push Tag
       run: |
-        TAG_NAME=${{ steps.create_tag.outputs.tag_name }}
+        TAG_NAME=${{ steps.tag_name.outputs.tag_name }}
         git push origin $TAG_NAME
       shell: bash
