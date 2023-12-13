@@ -9,10 +9,10 @@ runs:
       run: |
         TAG_NAME=$(date +'%Y%m%dT%H%M%S')
         git tag $TAG_NAME
-        echo "{tag-name}={$TAG_NAME}" >> $GITHUB_OUTPUT
+        echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
       shell: bash
     - name: Push Tag
       run: |
-        TAG_NAME=${{ steps.create_tag.outputs.tag-name }}
-        git push origin ${{ inputs.tag-name }}
+        TAG_NAME=${{ steps.create_tag.outputs.tag_name }}
+        git push origin $TAG_NAME
       shell: bash
